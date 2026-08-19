@@ -78,9 +78,15 @@ The backend must categorize each valid activity as exactly one of:
 - `Threshold`
 - `Sprint`
 
-The category must be calculated by the backend using the configured static pace thresholds.
+The category must be calculated by the backend using the following static pace thresholds:
 
-The exact threshold values are currently **TBD**, because they are not specified in the original task requirement.
+| Average Pace | Category |
+|---|---|
+| `>= 6.5 min/km` | Zone 2 |
+| `>= 5.0 and < 6.5 min/km` | Threshold |
+| `< 5.0 min/km` | Sprint |
+
+These thresholds are application-defined MVP rules. They provide a simple and consistent categorization mechanism for this application and are not intended to represent official or personalized physiological training zones.
 
 ---
 
@@ -174,33 +180,59 @@ Validation errors should be returned in a form that the frontend can display to 
 
 ---
 
-## 5. Assumptions
+## 5. Business Rules
+
+### Pace Calculation
+
+Average pace is calculated using:
+
+`average pace = total time in minutes / distance in kilometers`
+
+The calculation is performed by the backend.
 
 ### Pace Classification
 
-The original requirement specifies three categories:
+The application uses the following static pace thresholds:
 
-- Zone 2
-- Threshold
-- Sprint
+| Average Pace | Category |
+|---|---|
+| `>= 6.5 min/km` | Zone 2 |
+| `>= 5.0 and < 6.5 min/km` | Threshold |
+| `< 5.0 min/km` | Sprint |
 
-and states that classification should use static pace thresholds.
+The backend configuration contains these threshold values so that the categorization rules are centralized in one location.
 
-However, the original requirement does not specify the threshold values.
+The frontend does not contain these business rules.
 
-Therefore, the threshold values must be confirmed or explicitly defined as an MVP assumption before implementing the classification logic.
+These thresholds are simplified application-defined MVP rules and are not intended to represent official or personalized marathon training zones.
+
+---
+
+## 6. Assumptions
+
+### Static Threshold Configuration
+
+The requirement specifies that activity classification should use static pace thresholds but does not provide numerical values.
+
+For this MVP, the product owner has defined the following application rules:
+
+- `>= 6.5 min/km` → `Zone 2`
+- `>= 5.0 and < 6.5 min/km` → `Threshold`
+- `< 5.0 min/km` → `Sprint`
+
+The thresholds are centralized in the backend application configuration so that developers can change them in one place without modifying the categorization algorithm or frontend.
+
+Database-backed runtime configuration is not required for this MVP.
 
 ### Persistence
 
 The application requires persistent storage for logged activities.
 
-SQLite is proposed for the MVP because this is a lightweight application and the project has a two-day implementation window.
-
-The final persistence decision will be documented in the Architecture Decision Record.
+SQLite is used for the MVP because this is a lightweight application and the project has a short implementation timeframe.
 
 ---
 
-## 6. Out of Scope
+## 7. Out of Scope
 
 The following are not part of the MVP:
 
@@ -210,24 +242,12 @@ The following are not part of the MVP:
 - Marathon race planning
 - Charts and analytics
 - GPS tracking
+- Automatic activity tracking
 - Heart-rate monitoring
+- Wearable integrations
 - Notifications
 - Social features
 - Cloud deployment
 - Mobile application
-
-## MVP Pace Threshold Assumption
-
-The original requirement specifies that activities must be categorized using static pace thresholds, but it does not provide the threshold values.
-
-For this MVP, the following thresholds are assumed:
-
-| Average Pace | Category |
-|---|---|
-| >= 6.5 min/km | Zone 2 |
-| >= 5.0 and < 6.5 min/km | Threshold |
-| < 5.0 min/km | Sprint |
-
-These values are MVP assumptions and are not intended to represent official marathon training zones.
-
-The thresholds will be centralized in the backend application configuration so that developers can change them in one place without modifying the categorization algorithm or frontend.
+- Editing activities
+- Deleting activities
