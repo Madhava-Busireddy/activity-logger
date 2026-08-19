@@ -134,3 +134,18 @@ Runtime/database-managed threshold configuration is intentionally out of scope f
 └─────────────────────┘
 
 
+## 4. Consequences
+
+### Positive
+
+- The frontend remains focused on presentation.
+- Business rules are centralized in the backend.
+- Activities remain persisted after application restart.
+- SQLite keeps local setup simple.
+- Pace thresholds can be changed in one backend configuration file.
+
+### Trade-offs
+
+- The application requires both the frontend and backend to be running during development.
+- SQLite is suitable for this MVP but may need to be replaced with a server-based database if the application later requires multiple users or higher-scale deployment.
+- The pace thresholds are simplified MVP rules and are not personalized training zones.
