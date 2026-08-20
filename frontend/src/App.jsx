@@ -7,7 +7,7 @@ import ActivityForm from "./components/ActivityForm/ActivityForm";
 import ActivityHistory from "./components/ActivityHistory/ActivityHistory";
 import ConfirmModal from "./components/ConfirmModal/ConfirmModal";
 
-const API_URL = "http://localhost:3000/api/activities";
+const API_URL = import.meta.env.VITE_API_URL;
 
 function App() {
   const [activities, setActivities] = useState([]);
