@@ -1,0 +1,129 @@
+.activity-form {
+  margin-bottom: 28px;
+  padding: 28px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  text-align: left;
+}
+
+.activity-form h2 {
+  margin: 0 0 6px;
+  color: #111827;
+  font-size: 20px;
+}
+
+.activity-form-description {
+  margin: 0 0 22px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.activity-form form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+.activity-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.activity-form .form-group label {
+  color: #374151;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.activity-form .form-group input {
+  width: 100%;
+  padding: 12px 14px;
+  box-sizing: border-box;
+
+  border: 1px solid #d1d5db;
+  border-radius: 9px;
+
+  background: #ffffff;
+  color: #111827;
+
+  font-size: 15px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.activity-form .form-group input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.activity-form button {
+  padding: 12px 22px;
+  border: none;
+  border-radius: 9px;
+
+  background: #2563eb;
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+  white-space: nowrap;
+
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.activity-form button:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.activity-form button:disabled {
+  background: #93c5fd;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.activity-form .error {
+  margin: 18px 0 0;
+  padding: 12px 14px;
+
+  border-radius: 8px;
+
+  background: #fee2e2;
+  color: #b91c1c;
+
+  font-size: 14px;
+}
+
+/* Tablet */
+
+@media (max-width: 800px) {
+  .activity-form form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .activity-form button {
+    grid-column: span 2;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .activity-form {
+    padding: 22px;
+  }
+
+  .activity-form form {
+    grid-template-columns: 1fr;
+  }
+
+  .activity-form button {
+    grid-column: auto;
+    width: 100%;
+  }
+}

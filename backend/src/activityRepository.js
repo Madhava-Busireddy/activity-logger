@@ -42,7 +42,14 @@ function getActivities() {
   return statement.all();
 }
 
+function clearActivities() {
+  const statement = db.prepare(`DELETE FROM activities`);
+  const result = statement.run();
+  return result.changes; // number of rows deleted
+}
+
 module.exports = {
   saveActivity,
-  getActivities
+  getActivities,
+  clearActivities
 };

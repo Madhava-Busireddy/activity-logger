@@ -1,7 +1,8 @@
 const { calculatePace, getCategory } = require("./paceCalculator");
 const {
   saveActivity,
-  getActivities
+  getActivities,
+  clearActivities
 } = require("./activityRepository");
 
 function validateActivityInput(distanceKm, totalTimeMinutes) {
@@ -58,8 +59,13 @@ function listActivities() {
   return getActivities();
 }
 
+function clearAllActivities() {
+  return clearActivities();
+}
+
 module.exports = {
   createActivity,
   listActivities,
+  clearAllActivities,
   validateActivityInput
 };

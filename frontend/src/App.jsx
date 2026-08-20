@@ -1,27 +1,26 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import Header from "./components/Header/Header";
+import Dashboard from "./components/Dashboard/Dashboard";
+import SummaryCards from "./components/SummaryCards/SummaryCards";
+import ActivityForm from "./components/ActivityForm/ActivityForm";
+import ActivityHistory from "./components/ActivityHistory/ActivityHistory";
+import ConfirmModal from "./components/ConfirmModal/ConfirmModal";
 
 const API_URL = "http://localhost:3000/api/activities";
 
 function App() {
-  const [distanceKm, setDistanceKm] = useState("");
-  const [totalTimeMinutes, setTotalTimeMinutes] = useState("");
   const [activities, setActivities] = useState([]);
-  const [error, setError] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showClearModal, setShowClearModal] = useState(false);
 
   const loadActivities = async () => {
     try {
       const response = await fetch(API_URL);
-
-      if (!response.ok) {
-        throw new Error("Failed to load activities");
-      }
-
+      if (!response.ok) throw new Error("Failed to load activities");
       const data = await response.json();
       setActivities(data);
     } catch (error) {
-      setError(error.message);
+      console.error(error);
     }
   };
 
@@ -29,116 +28,49 @@ function App() {
     loadActivities();
   }, []);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setError("");
-    setIsSubmitting(true);
-
+  const handleClearAll = async () => {
     try {
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          distanceKm: Number(distanceKm),
-          totalTimeMinutes: Number(totalTimeMinutes),
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to create activity");
-      }
-
-      setActivities((currentActivities) => [
-        data,
-        ...currentActivities,
-      ]);
-
-      setDistanceKm("");
-      setTotalTimeMinutes("");
+      const response = await fetch(API_URL, { method: "DELETE" });
+      if (!response.ok) throw new Error("Failed to clear activities");
+      setActivities([]);
     } catch (error) {
-      setError(error.message);
+      console.error(error);
     } finally {
-      setIsSubmitting(false);
+      setShowClearModal(false);
     }
   };
 
   return (
-    <main className="app">
-      <header className="header">
-        <h1>Activity Logger</h1>
-        <p>Track your marathon training activities.</p>
-      </header>
-
-      <section className="card">
-        <h2>Log Activity</h2>
-
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="distance">Distance (km)</label>
-            <input
-              id="distance"
-              type="number"
-              min="0"
-              step="0.01"
-              value={distanceKm}
-              onChange={(event) => setDistanceKm(event.target.value)}
-              placeholder="e.g. 10"
-              required
+    <>
+      <Header
+        onClearClick={() => setShowClearModal(true)}
+        activityCount={activities.length}
+      />
+      <main className="app">
+        <Dashboard>
+          <SummaryCards activities={activities} />
+          <div className="dashboard__main">
+            <ActivityForm
+              onActivityCreated={(activity) => {
+                setActivities((currentActivities) => [
+                  activity,
+                  ...currentActivities,
+                ]);
+              }}
             />
+            <ActivityHistory activities={activities} />
           </div>
+        </Dashboard>
+      </main>
 
-          <div className="form-group">
-            <label htmlFor="time">Total Time (minutes)</label>
-            <input
-              id="time"
-              type="number"
-              min="0"
-              step="0.01"
-              value={totalTimeMinutes}
-              onChange={(event) =>
-                setTotalTimeMinutes(event.target.value)
-              }
-              placeholder="e.g. 60"
-              required
-            />
-          </div>
-
-          <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Saving..." : "Log Activity"}
-          </button>
-        </form>
-
-        {error && <p className="error">{error}</p>}
-      </section>
-
-      <section className="card">
-        <h2>Activity History</h2>
-
-        {activities.length === 0 ? (
-          <p className="empty">No activities logged yet.</p>
-        ) : (
-          <div className="activity-list">
-            {activities.map((activity) => (
-              <article className="activity" key={activity.id}>
-                <div>
-                  <strong>{activity.distanceKm} km</strong>
-                  <span>{activity.totalTimeMinutes} min</span>
-                </div>
-
-                <div>
-                  <strong>{activity.averagePace} min/km</strong>
-                  <span>{activity.category}</span>
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
-      </section>
-    </main>
+      <ConfirmModal
+        open={showClearModal}
+        title="Clear all activities?"
+        message="Do you want to clear all the existing activities here? This can't be undone."
+        onConfirm={handleClearAll}
+        onCancel={() => setShowClearModal(false)}
+      />
+    </>
   );
 }
 

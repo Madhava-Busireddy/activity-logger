@@ -1,0 +1,56 @@
+.activity-history {
+  padding: 28px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+  height: calc(100% - 24px);   /* was: 100% — this is the line to tune */
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-history__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+
+.activity-history__header h2 {
+  margin: 0;
+  color: #111827;
+  font-size: 20px;
+}
+
+.activity-history__count {
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.empty {
+  margin: 0;
+  padding: 30px 0;
+  color: #6b7280;
+  text-align: center;
+  font-size: 14px;
+}
+
+@media (max-width: 600px) {
+  .activity-history {
+    padding: 22px;
+  }
+}
