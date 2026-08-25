@@ -12,9 +12,10 @@
   display: grid;
   grid-template-columns: 1fr 1.5fr;
   gap: 24px;
-  align-items: stretch;
-  flex: 1;
-  min-height: 0;
+  height: 405px;
+  /* align-items: stretch; */
+  /* flex: 1; */
+  /* min-height: 0; */
 }
 
 @media (max-width: 900px) {
